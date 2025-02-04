@@ -1,3 +1,4 @@
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { absentPeiods, currentDate, daysToDo, startDate } from "../data/Data";
 import { calculateDaysBetweenDates, calculateDaysBetweenTimePerios, calculatePredictedTargetDate, calculateTargetDate } from "../utils/DateUtils";
 
@@ -11,36 +12,37 @@ const Home = () => {
     const earliestPossibleDate = calculateTargetDate(currentDate, daysToGo);
     const predictedDate = calculatePredictedTargetDate(currentDate, daysToGo, percentAbsent);
 
+    function createData(name: string, data: string) {
+        return { name, data };
+    }
+
+    const rows = [
+        createData("Start Date", startDate.toLocaleDateString()),
+        createData("Current date", currentDate.toLocaleDateString()),
+        createData("Days done", daysDone.toString()),
+        createData("Days to go", daysToGo.toString()),
+        createData("Percentage done", percentDone + "%"),
+        createData("Days absent", daysAbsent.toString()),
+        createData("Percentage absent", percentAbsent + "%"),
+        createData("Earliest possible finish date", earliestPossibleDate.toLocaleDateString()),
+        createData("Predicted finish date", predictedDate.toLocaleDateString()),
+    ]
+
     return (
-        <div>
-            <div>
-                Start date: {startDate.toLocaleDateString()}
-            </div>
-            <div>
-                Current date: {currentDate.toLocaleDateString()}
-            </div>
-            <div>
-                Days done: {daysDone}
-            </div>
-            <div>
-                Days to go: {daysToGo}
-            </div>
-            <div>
-                Percentage done: {percentDone}%
-            </div>
-            <div>
-                Days absent: {daysAbsent}
-            </div>
-            <div>
-                Percentage absent: {percentAbsent}%
-            </div>
-            <div>
-                Earliest possible finish date: {earliestPossibleDate.toLocaleDateString()}
-            </div>
-            <div>
-                Predicted finish date: {predictedDate.toLocaleDateString()}
-            </div>
-        </div>
+        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"100px"}>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableBody>
+                        {rows.map((row) => (
+                            <TableRow key={row.name}>
+                                <TableCell>{row.name}</TableCell>
+                                <TableCell>{row.data}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box >
     );
 };
 
